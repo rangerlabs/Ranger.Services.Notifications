@@ -1,0 +1,1 @@
+dotnet ef database update -p ./src/Ranger.Services.Notifications.Data/Ranger.Services.Notifications.Data.csproj -c NotificationsDbContext -s ./src/Ranger.Services.Notifications/Ranger.Services.Notifications.csproj 
