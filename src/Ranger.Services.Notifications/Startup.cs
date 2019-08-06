@@ -50,6 +50,8 @@ namespace Ranger.Services.Notifications {
             services.AddTransient<INotificationsDbContextInitializer, NotificationsDbContextInitializer> ();
             services.AddTransient<INotificationsRepository, NotificationsRepository> ();
 
+            services.AddSingleton<IEmailNotifier, EmailNotifier> ();
+
             services.AddAuthentication ("Bearer")
                 .AddIdentityServerAuthentication (options => {
                     options.Authority = "http://identity:5000/auth";
@@ -75,8 +77,10 @@ namespace Ranger.Services.Notifications {
             applicationLifetime.ApplicationStopping.Register (OnShutdown);
             app.UseAuthentication ();
             app.UseMvcWithDefaultRoute ();
-            this.busSubscriber = app.UseRabbitMQ ();
-
+            this.busSubscriber = app.UseRabbitMQ ()
+                .SubscribeCommand<SendNewTenantOwnerEmail> ((c, e) =>
+                    new SendNewTenantOwnerEmailRejected (e.Message, "")
+                );
         }
 
         private void OnShutdown () {
