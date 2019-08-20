@@ -48,7 +48,6 @@ namespace Ranger.Services.Notifications {
             );
 
             services.AddTransient<INotificationsDbContextInitializer, NotificationsDbContextInitializer> ();
-            services.AddTransient<INotificationsRepository, NotificationsRepository> ();
 
             services.AddSingleton<IEmailNotifier, EmailNotifier> ();
 
