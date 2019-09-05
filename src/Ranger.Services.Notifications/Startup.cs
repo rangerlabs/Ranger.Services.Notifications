@@ -79,6 +79,7 @@ namespace Ranger.Services.Notifications
                             var options = configuration.GetOptions<RangerPusherOptions>("pusher");
                             return new Pusher(options.AppId, options.Key, options.Secret, new PusherOptions { Cluster = options.Cluster, Encrypted = bool.Parse(options.Encrypted) });
                         });
+            services.AddSingleton<IPusherNotifier, PusherNotifier>();
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.AddRabbitMq(loggerFactory);
@@ -94,8 +95,11 @@ namespace Ranger.Services.Notifications
             this.busSubscriber = app.UseRabbitMQ()
                 .SubscribeCommand<SendNewTenantOwnerEmail>((c, e) =>
                    new SendNewTenantOwnerEmailRejected(e.Message, "")
-                );
+                )
+                .SubscribeCommand<SendPusherDomainFrontendNotification>()
+                .SubscribeCommand<SendPusherPrivateFrontendNotification>();
         }
+
 
         private void OnShutdown()
         {

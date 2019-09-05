@@ -1,4 +1,4 @@
-namespace Ranger.Services.Notifications
+namespace Ranger.Services.Notifications.Data
 {
     public enum OperationsStateEnum
     {

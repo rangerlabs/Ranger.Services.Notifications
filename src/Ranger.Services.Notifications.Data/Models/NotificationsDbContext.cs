@@ -57,11 +57,9 @@ namespace Ranger.Services.Notifications.Data
                     index.Relational().Name = index.Relational().Name.ToSnakeCase();
                 }
                 modelBuilder.Entity<FrontendNotification>()
-                  .HasIndex(un => un.BackendEventName)
-                  .IsUnique();
+                  .HasKey(o => new { o.BackendEventKey, o.OperationsState });
                 modelBuilder.Entity<FrontendNotification>()
-                  .HasIndex(un => un.PusherEventName)
-                  .IsUnique();
+                  .HasIndex(un => un.PusherEventName);
                 encryptionHelper?.SetEncrytedPropertyAccessMode(entity);
             }
         }
