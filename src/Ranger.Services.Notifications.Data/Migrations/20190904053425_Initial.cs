@@ -20,12 +20,34 @@ namespace Ranger.Services.Notifications.Data.Migrations
                 {
                     table.PrimaryKey("pk_data_protection_keys", x => x.id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "frontend_notifications",
+                columns: table => new
+                {
+                    backend_event_key = table.Column<string>(nullable: false),
+                    operations_state = table.Column<int>(nullable: false),
+                    pusher_event_name = table.Column<string>(nullable: false),
+                    text = table.Column<string>(maxLength: 160, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_frontend_notifications", x => new { x.backend_event_key, x.operations_state });
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_frontend_notifications_pusher_event_name",
+                table: "frontend_notifications",
+                column: "pusher_event_name");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "data_protection_keys");
+
+            migrationBuilder.DropTable(
+                name: "frontend_notifications");
         }
     }
 }
