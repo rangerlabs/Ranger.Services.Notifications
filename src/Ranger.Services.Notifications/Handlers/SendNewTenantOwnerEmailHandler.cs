@@ -28,7 +28,7 @@ namespace Ranger.Services.Notifications.Handlers
                     firstname = message.FirstName,
                 },
                 domain = message.Domain,
-                confirm = $"https://rangerlabs.io/confirm/{message.RegistrationCode}"
+                confirm = $"http://rangerlabs.io/confirmdomain?domain={message.Domain}&registrationKey={message.RegistrationCode}"
             };
             try
             {
