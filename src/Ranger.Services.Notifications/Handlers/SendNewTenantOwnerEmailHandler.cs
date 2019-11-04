@@ -36,8 +36,8 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send NewTenantOwnerEmail.");
-                throw ex;
+                logger.LogError(ex, "Failed to send new tenant owner email.");
+                throw;
             }
 
             busPublisher.Publish(new SendNewTenantOwnerEmailSent(), context);

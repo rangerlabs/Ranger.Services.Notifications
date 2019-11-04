@@ -14,7 +14,7 @@ namespace Ranger.Services.Notifications
 
         public async Task HandleAsync(SendPusherPrivateFrontendNotification message, ICorrelationContext context)
         {
-            await pusherNotifier.SendPrivateFrontendNotification(context.CorrelationContextId.ToString(), message.BackendEventKey, message.Domain, context.UserEmail, message.State);
+            await pusherNotifier.SendPrivateFrontendNotification(context.CorrelationContextId.ToString(), message.BackendEventKey, message.Domain, message.UserEmail, message.State);
         }
     }
 }
