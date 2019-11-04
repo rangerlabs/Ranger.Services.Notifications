@@ -34,7 +34,7 @@ namespace Ranger.Services.Notifications
         {
             BackendEventKey = "NewUser",
             OperationsState = OperationsStateEnum.Completed,
-            PusherEventName = "user-deleted",
+            PusherEventName = "user-created",
             Text = "User created."
         };
         private static FrontendNotification NewUserCreatedRejectedNotification = new FrontendNotification()
