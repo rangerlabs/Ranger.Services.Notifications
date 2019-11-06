@@ -28,8 +28,8 @@ namespace Ranger.Services.Notifications
                     firstname = message.FirstName,
                 },
                 domain = message.Domain,
-                confirm = $"https://rangerlabs.io/confirmuser?domain={message.Domain}&registrationKey={message.RegistrationCode}",
-                permittedProjects = message.PermittedProjects
+                confirm = $"https://rangerlabs.io/confirm-user?domain={message.Domain}&registrationKey={message.RegistrationCode}",
+                authorizedProjects = message.AuthorizedProjects
             };
             try
             {

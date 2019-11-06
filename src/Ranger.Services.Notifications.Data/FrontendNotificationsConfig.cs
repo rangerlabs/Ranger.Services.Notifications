@@ -11,8 +11,6 @@ namespace Ranger.Services.Notifications
             {
                 TenantOnboardingCompleteNotification,
                 TenantOnboardingRejectedNotification,
-                NewUserCreatedCompletedNotification,
-                NewUserCreatedRejectedNotification
             };
         }
 
@@ -29,20 +27,6 @@ namespace Ranger.Services.Notifications
             OperationsState = OperationsStateEnum.Rejected,
             PusherEventName = "tenant-onboard",
             Text = "An issue arose creating your domain. We'll investigate and be in touch shortly."
-        };
-        private static FrontendNotification NewUserCreatedCompletedNotification = new FrontendNotification()
-        {
-            BackendEventKey = "NewUser",
-            OperationsState = OperationsStateEnum.Completed,
-            PusherEventName = "user-created",
-            Text = "User created."
-        };
-        private static FrontendNotification NewUserCreatedRejectedNotification = new FrontendNotification()
-        {
-            BackendEventKey = "NewUser",
-            OperationsState = OperationsStateEnum.Rejected,
-            PusherEventName = "user-created",
-            Text = "Error creating user."
         };
     }
 }
