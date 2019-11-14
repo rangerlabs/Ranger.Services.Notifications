@@ -28,7 +28,7 @@ namespace Ranger.Services.Notifications.Handlers
                     firstname = message.FirstName,
                 },
                 domain = message.Domain,
-                confirm = $"https://rangerlabs.io/confirmdomain?domain={message.Domain}&registrationKey={message.RegistrationCode}"
+                confirm = $"https://rangerlabs.io/confirm-domain?domain={message.Domain}&registrationKey={message.RegistrationCode}"
             };
             try
             {
@@ -36,8 +36,8 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send NewTenantOwnerEmail.");
-                throw ex;
+                logger.LogError(ex, "Failed to send new tenant owner email.");
+                throw;
             }
 
             busPublisher.Publish(new SendNewTenantOwnerEmailSent(), context);

@@ -10,7 +10,7 @@ namespace Ranger.Services.Notifications
             return new List<FrontendNotification>()
             {
                 TenantOnboardingCompleteNotification,
-                TenantOnboardingRejectedNotification
+                TenantOnboardingRejectedNotification,
             };
         }
 

@@ -3,8 +3,8 @@ using Ranger.RabbitMQ;
 namespace Ranger.Services.Notifications
 {
     [MessageNamespaceAttribute("notifications")]
-    public class SendNewTenantOwnerEmailSent : IEvent
+    public class SendNewUserEmailSent : IEvent
     {
-        public SendNewTenantOwnerEmailSent() { }
+        public SendNewUserEmailSent() { }
     }
 }

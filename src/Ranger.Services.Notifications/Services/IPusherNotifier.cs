@@ -6,7 +6,8 @@ namespace Ranger.Services.Notifications
 {
     public interface IPusherNotifier
     {
-        Task SendPrivateFrontendNotification(string id, string backendEventName, string domain, string userEmail, OperationsStateEnum state);
+        Task SendDomainUserCustomNotification(string id, string eventName, string backendEventName, string domain, string userEmail, OperationsStateEnum state);
+        Task SendDomainUserPredefinedNotification(string id, string backendEventName, string domain, string userEmail, OperationsStateEnum state);
         Task SendDomainFrontendNotification(string id, string backendEventName, string domain, OperationsStateEnum state);
     }
 }

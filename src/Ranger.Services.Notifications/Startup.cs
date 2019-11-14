@@ -98,8 +98,12 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendNewTenantOwnerEmail>((c, e) =>
                    new SendNewTenantOwnerEmailRejected(e.Message, "")
                 )
+                .SubscribeCommand<SendNewUserEmail>((c, e) =>
+                    new SendNewUserEmailRejected(e.Message, "")
+                )
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
-                .SubscribeCommand<SendPusherPrivateFrontendNotification>();
+                .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
+                .SubscribeCommand<SendPusherDomainUserCustomNotification>();
         }
 
 
