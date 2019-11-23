@@ -102,6 +102,7 @@ namespace Ranger.Services.Notifications
                     new SendNewUserEmailRejected(e.Message, "")
                 )
                 .SubscribeCommand<SendResetPasswordEmail>()
+                .SubscribeCommand<SendChangeEmailEmail>()
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
                 .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
                 .SubscribeCommand<SendPusherDomainUserCustomNotification>();

@@ -7,19 +7,19 @@ using SendGrid.Helpers.Mail;
 
 namespace Ranger.Services.Notifications.Handlers
 {
-    class SendResetPasswordEmailHandler : ICommandHandler<SendResetPasswordEmail>
+    class SendChangeEmailEmailHandler : ICommandHandler<SendChangeEmailEmail>
     {
-        private readonly ILogger<SendResetPasswordEmailHandler> logger;
+        private readonly ILogger<SendChangeEmailEmailHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendResetPasswordEmailHandler(ILogger<SendResetPasswordEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendChangeEmailEmailHandler(ILogger<SendChangeEmailEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
-        public async Task HandleAsync(SendResetPasswordEmail message, ICorrelationContext context)
+        public async Task HandleAsync(SendChangeEmailEmail message, ICorrelationContext context)
         {
             var personalizationData = new
             {
@@ -29,15 +29,15 @@ namespace Ranger.Services.Notifications.Handlers
                 },
                 domain = message.Domain,
                 organizationName = message.OrganizationName,
-                reset = $"https://rangerlabs.io/password-reset?domain={message.Domain}&userId={message.UserId}&token={message.Token}"
+                change = $"https://rangerlabs.io/email-change?domain={message.Domain}&userId={message.UserId}&token={message.Token}"
             };
             try
             {
-                await emailNotifier.SendAsync(new EmailAddress(message.Email), "d-fabffc38e89d4de5b89eadf45324ff78", personalizationData);
+                await emailNotifier.SendAsync(new EmailAddress(message.Email), "d-c693f151003a401383e77819ebb85295", personalizationData);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send password reset email.");
+                logger.LogError(ex, "Failed to send change email email.");
                 throw;
             }
         }
