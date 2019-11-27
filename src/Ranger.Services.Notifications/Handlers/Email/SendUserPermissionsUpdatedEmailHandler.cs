@@ -7,7 +7,7 @@ using SendGrid.Helpers.Mail;
 
 namespace Ranger.Services.Notifications
 {
-    class SendUserPermissionsUpdatedHandler : ICommandHandler<SendNewUserEmail>
+    class SendUserPermissionsUpdatedHandler : ICommandHandler<SendUserPermissionsUpdatedEmail>
     {
         private readonly ILogger<SendUserPermissionsUpdatedHandler> logger;
         private readonly IEmailNotifier emailNotifier;
@@ -19,7 +19,7 @@ namespace Ranger.Services.Notifications
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
-        public async Task HandleAsync(SendNewUserEmail message, ICorrelationContext context)
+        public async Task HandleAsync(SendUserPermissionsUpdatedEmail message, ICorrelationContext context)
         {
             var personalizationData = new
             {

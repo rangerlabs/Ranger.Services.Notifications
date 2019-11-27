@@ -105,6 +105,7 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendChangeEmailEmail>()
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
                 .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
+                .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
                 .SubscribeCommand<SendPusherDomainUserCustomNotification>();
         }
 
