@@ -7,13 +7,13 @@ using SendGrid.Helpers.Mail;
 
 namespace Ranger.Services.Notifications
 {
-    class SendNewUserEmailHandler : ICommandHandler<SendNewUserEmail>
+    class SendUserPermissionsUpdatedHandler : ICommandHandler<SendNewUserEmail>
     {
-        private readonly ILogger<SendNewUserEmailHandler> logger;
+        private readonly ILogger<SendUserPermissionsUpdatedHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendNewUserEmailHandler(ILogger<SendNewUserEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendUserPermissionsUpdatedHandler(ILogger<SendUserPermissionsUpdatedHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
             this.logger = logger;
             this.emailNotifier = emailNotifier;
@@ -27,23 +27,23 @@ namespace Ranger.Services.Notifications
                 {
                     firstname = message.FirstName,
                 },
+                domain = message.Domain,
                 organization = message.Organization,
                 isUser = Enum.Parse<RolesEnum>(message.Role) == RolesEnum.User,
                 role = message.Role,
-                confirm = $"https://rangerlabs.io/confirm-user?domain={message.Domain}&userId={message.UserId}&token={message.Token}",
                 authorizedProjects = message.AuthorizedProjects
             };
             try
             {
-                await emailNotifier.SendAsync(new EmailAddress(message.Email), "d-9b6ca5af2e444c729270908523b8af95", personalizationData);
+                await emailNotifier.SendAsync(new EmailAddress(message.Email), "d-872bcb0e06e9487bbe492009f711ce76", personalizationData);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send new user email.");
+                logger.LogError(ex, "Failed to send user permissions update email.");
                 throw;
             }
 
-            busPublisher.Publish(new SendNewUserEmailSent(), context);
+            busPublisher.Publish(new SendUserPermissionsUpdatedEmailSent(), context);
         }
     }
 }

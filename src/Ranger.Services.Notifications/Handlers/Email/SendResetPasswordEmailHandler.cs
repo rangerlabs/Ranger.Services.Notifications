@@ -28,7 +28,7 @@ namespace Ranger.Services.Notifications.Handlers
                     firstname = message.FirstName,
                 },
                 domain = message.Domain,
-                organizationName = message.OrganizationName,
+                organization = message.Organization,
                 reset = $"https://rangerlabs.io/password-reset?domain={message.Domain}&userId={message.UserId}&token={message.Token}"
             };
             try

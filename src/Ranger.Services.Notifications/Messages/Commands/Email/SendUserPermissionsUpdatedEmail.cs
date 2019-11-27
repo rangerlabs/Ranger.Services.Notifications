@@ -4,7 +4,7 @@ using Ranger.RabbitMQ;
 namespace Ranger.Services.Notifications
 {
     [MessageNamespace("notifications")]
-    public class SendNewUserEmail : ICommand
+    public class SendUserPermissionsUpdatedEmail : ICommand
     {
         public string UserId { get; }
         public string Email { get; }
@@ -12,10 +12,9 @@ namespace Ranger.Services.Notifications
         public string Domain { get; }
         public string Organization { get; }
         public string Role { get; }
-        public string Token { get; }
         public IEnumerable<string> AuthorizedProjects { get; }
 
-        public SendNewUserEmail(string userId, string email, string firstName, string domain, string orgnization, string role, string token, IEnumerable<string> authorizedProjects = null)
+        public SendUserPermissionsUpdatedEmail(string userId, string email, string firstName, string domain, string organization, string role, IEnumerable<string> authorizedProjects = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -37,27 +36,22 @@ namespace Ranger.Services.Notifications
                 throw new System.ArgumentNullException(nameof(domain));
             }
 
-            if (string.IsNullOrWhiteSpace(orgnization))
+            if (string.IsNullOrWhiteSpace(organization))
             {
-                throw new System.ArgumentNullException(nameof(orgnization));
+                throw new System.ArgumentNullException(nameof(organization));
             }
+
             if (string.IsNullOrWhiteSpace(role))
             {
                 throw new System.ArgumentNullException(nameof(role));
-            }
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                throw new System.ArgumentNullException(nameof(token));
             }
 
             this.UserId = userId;
             this.Email = email;
             this.FirstName = firstName;
             this.Domain = domain;
-            this.Organization = orgnization;
+            this.Organization = organization;
             this.Role = role;
-            this.Token = token;
             this.AuthorizedProjects = authorizedProjects;
 
         }
