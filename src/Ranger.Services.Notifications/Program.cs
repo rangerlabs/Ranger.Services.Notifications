@@ -31,7 +31,7 @@ namespace Ranger.Services.Notifications
             using (var scope = host.Services.CreateScope())
             {
                 var dbInitializer = scope.ServiceProvider.GetRequiredService<INotificationsDbContextInitializer>();
-                var env = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+                var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
                 dbInitializer.Migrate();
                 dbInitializer.Seed();
