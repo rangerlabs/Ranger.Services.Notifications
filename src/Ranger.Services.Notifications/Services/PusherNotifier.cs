@@ -29,13 +29,14 @@ namespace Ranger.Services.Notifications
 
         public async Task SendDomainUserPredefinedNotification(string id, string backendEventName, string domain, string userEmail, OperationsStateEnum state)
         {
-            var userNotification = notificationsDbContext.FrontendNotifications.FirstOrDefault(un => un.BackendEventKey == backendEventName && un.OperationsState == state);
-            if (userNotification != null)
+            var notifications = notificationsDbContext.FrontendNotifications.Where(_ => _.BackendEventKey == backendEventName).ToList();
+            var notification = notifications.Count() > 1 ? notifications.FirstOrDefault(_ => _.OperationsState == state) : notifications[0];
+            if (notification != null)
             {
                 await pusher.TriggerAsync(
                     $"private-{domain}-{userEmail}",
-                    userNotification.PusherEventName,
-                    new { correlationId = id, message = userNotification.Text, status = state }
+                    notification.PusherEventName,
+                    new { correlationId = id, message = notification.Text, status = state }
                 );
             }
         }
