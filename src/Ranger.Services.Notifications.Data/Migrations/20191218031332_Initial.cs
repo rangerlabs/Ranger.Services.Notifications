@@ -12,7 +12,7 @@ namespace Ranger.Services.Notifications.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     friendly_name = table.Column<string>(nullable: true),
                     xml = table.Column<string>(nullable: true)
                 },
@@ -28,15 +28,15 @@ namespace Ranger.Services.Notifications.Data.Migrations
                     backend_event_key = table.Column<string>(nullable: false),
                     operations_state = table.Column<int>(nullable: false),
                     pusher_event_name = table.Column<string>(nullable: false),
-                    text = table.Column<string>(maxLength: 160, nullable: false)
+                    text = table.Column<string>(maxLength: 160, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_frontend_notifications", x => new { x.backend_event_key, x.operations_state });
+                    table.PrimaryKey("PK_frontend_notifications", x => new { x.backend_event_key, x.operations_state });
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_frontend_notifications_pusher_event_name",
+                name: "IX_frontend_notifications_pusher_event_name",
                 table: "frontend_notifications",
                 column: "pusher_event_name");
         }

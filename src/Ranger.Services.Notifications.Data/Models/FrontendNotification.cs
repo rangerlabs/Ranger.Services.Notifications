@@ -14,7 +14,6 @@ namespace Ranger.Services.Notifications.Data
 
         public OperationsStateEnum OperationsState { get; set; }
 
-        [Required]
         [StringLength(160)]
         public string Text { get; set; }
     }

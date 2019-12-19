@@ -14,21 +14,25 @@ namespace Ranger.Services.Notifications.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id");
+                        .HasColumnName("id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("FriendlyName")
-                        .HasColumnName("friendly_name");
+                        .HasColumnName("friendly_name")
+                        .HasColumnType("text");
 
                     b.Property<string>("Xml")
-                        .HasColumnName("xml");
+                        .HasColumnName("xml")
+                        .HasColumnType("text");
 
                     b.HasKey("Id")
                         .HasName("pk_data_protection_keys");
@@ -39,25 +43,26 @@ namespace Ranger.Services.Notifications.Data.Migrations
             modelBuilder.Entity("Ranger.Services.Notifications.Data.FrontendNotification", b =>
                 {
                     b.Property<string>("BackendEventKey")
-                        .HasColumnName("backend_event_key");
+                        .HasColumnName("backend_event_key")
+                        .HasColumnType("text");
 
                     b.Property<int>("OperationsState")
-                        .HasColumnName("operations_state");
+                        .HasColumnName("operations_state")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PusherEventName")
                         .IsRequired()
-                        .HasColumnName("pusher_event_name");
+                        .HasColumnName("pusher_event_name")
+                        .HasColumnType("text");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnName("text")
+                        .HasColumnType("character varying(160)")
                         .HasMaxLength(160);
 
-                    b.HasKey("BackendEventKey", "OperationsState")
-                        .HasName("pk_frontend_notifications");
+                    b.HasKey("BackendEventKey", "OperationsState");
 
-                    b.HasIndex("PusherEventName")
-                        .HasName("ix_frontend_notifications_pusher_event_name");
+                    b.HasIndex("PusherEventName");
 
                     b.ToTable("frontend_notifications");
                 });
