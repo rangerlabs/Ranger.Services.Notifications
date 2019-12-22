@@ -103,8 +103,8 @@ namespace Ranger.Services.Notifications
                 endpoints.MapControllers();
             });
             this.busSubscriber = app.UseRabbitMQ()
-                .SubscribeCommand<SendNewTenantOwnerEmail>((c, e) =>
-                   new SendNewTenantOwnerEmailRejected(e.Message, "")
+                .SubscribeCommand<SendNewPrimaryOwnerEmail>((c, e) =>
+                   new SendNewPrimaryOwnerEmailRejected(e.Message, "")
                 )
                 .SubscribeCommand<SendNewUserEmail>((c, e) =>
                     new SendNewUserEmailRejected(e.Message, "")
