@@ -7,19 +7,19 @@ using SendGrid.Helpers.Mail;
 
 namespace Ranger.Services.Notifications.Handlers
 {
-    class SendNewTenantOwnerEmailHandler : ICommandHandler<SendNewTenantOwnerEmail>
+    class SendNewPrimaryOwnerEmailHandler : ICommandHandler<SendNewPrimaryOwnerEmail>
     {
-        private readonly ILogger<SendNewTenantOwnerEmailHandler> logger;
+        private readonly ILogger<SendNewPrimaryOwnerEmailHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendNewTenantOwnerEmailHandler(ILogger<SendNewTenantOwnerEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendNewPrimaryOwnerEmailHandler(ILogger<SendNewPrimaryOwnerEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
-        public async Task HandleAsync(SendNewTenantOwnerEmail message, ICorrelationContext context)
+        public async Task HandleAsync(SendNewPrimaryOwnerEmail message, ICorrelationContext context)
         {
             var personalizationData = new
             {
@@ -40,7 +40,7 @@ namespace Ranger.Services.Notifications.Handlers
                 throw;
             }
 
-            busPublisher.Publish(new SendNewTenantOwnerEmailSent(), context);
+            busPublisher.Publish(new SendNewPrimaryOwnerEmailSent(), context);
         }
     }
 }
