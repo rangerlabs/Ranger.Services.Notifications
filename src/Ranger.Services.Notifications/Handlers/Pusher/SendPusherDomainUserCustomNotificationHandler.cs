@@ -14,7 +14,7 @@ namespace Ranger.Services.Notifications
 
         public async Task HandleAsync(SendPusherDomainUserCustomNotification message, ICorrelationContext context)
         {
-            await pusherNotifier.SendDomainUserCustomNotification(context.CorrelationContextId.ToString(), message.EventName, message.Message, message.Domain, message.UserEmail, message.State);
+            await pusherNotifier.SendDomainUserCustomNotification(context.CorrelationContextId.ToString(), message.EventName, message.Message, message.Domain, message.UserEmail, message.State, message.ResourceId);
         }
     }
 }

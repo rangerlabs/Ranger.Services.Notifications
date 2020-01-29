@@ -18,12 +18,12 @@ namespace Ranger.Services.Notifications
             this.notificationsDbContext = notificationsDbContext;
         }
 
-        public async Task SendDomainUserCustomNotification(string id, string eventName, string message, string domain, string userEmail, OperationsStateEnum state)
+        public async Task SendDomainUserCustomNotification(string id, string eventName, string message, string domain, string userEmail, OperationsStateEnum state, string resourceId = "")
         {
             await pusher.TriggerAsync(
                 $"private-{domain}-{userEmail}",
                 eventName,
-                new { correlationId = id, message = message, status = state }
+                new { correlationId = id, message = message, status = state, resourceId = resourceId }
             );
         }
 
