@@ -70,8 +70,6 @@ namespace Ranger.Services.Notifications
                     options.Authority = "http://identity:5000/auth";
                     options.ApiName = "notificationsApi";
 
-                    //TODO: Change these to true
-                    options.EnableCaching = false;
                     options.RequireHttpsMetadata = false;
                 });
 
@@ -88,7 +86,7 @@ namespace Ranger.Services.Notifications
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.AddRabbitMq(loggerFactory);
+            builder.AddRabbitMq();
         }
 
         public void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory)
