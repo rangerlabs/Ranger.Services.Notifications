@@ -1,12 +1,9 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +103,9 @@ namespace Ranger.Services.Notifications
                 )
                 .SubscribeCommand<SendNewUserEmail>((c, e) =>
                     new SendNewUserEmailRejected(e.Message, "")
+                )
+                .SubscribeCommand<SendPrimaryOwnerTransferEmails>((c, e) =>
+                    new SendPrimaryOwnerTransferEmailsRejected(e.Message, "")
                 )
                 .SubscribeCommand<SendResetPasswordEmail>()
                 .SubscribeCommand<SendChangeEmailEmail>()
