@@ -34,17 +34,22 @@ namespace Ranger.Services.Notifications.Handlers
                     lastname = message.OwnerLastName
                 },
                 organization = message.OrganizationName,
+                domain = message.Domain,
+                transferEmail = message.TransferEmail,
+                ownerEmail = message.OwnerEmail,
                 acceptLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&token={message.Token}&response={TransferPrimaryOwnershipResultEnum.Accept}",
-                rejectLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}"
+                rejectLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}",
+                cancelLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/cancel-transfer-ownership?correlationId={message.CorrelationId}"
             };
             try
             {
                 await emailNotifier.SendAsync(new EmailAddress(message.TransferEmail), "d-a499a694b13e4efdaf651d0de34cb295", personalizationData);
+                await emailNotifier.SendAsync(new EmailAddress(message.OwnerEmail), "d-b9be5636359c4c9c8804a708b5029913", personalizationData);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send primary ownership transfer email.");
-                throw new RangerException("Failed to send primary ownership transfer email.");
+                logger.LogError(ex, "Failed to send primary ownership transfer emails.");
+                throw new RangerException("Failed to send primary ownership transfer emails.");
             }
 
             busPublisher.Publish(new SendPrimaryOwnerTransferEmailsSent(), context);

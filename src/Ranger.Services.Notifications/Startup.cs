@@ -107,6 +107,9 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendPrimaryOwnerTransferEmails>((c, e) =>
                     new SendPrimaryOwnerTransferEmailsRejected(e.Message, "")
                 )
+                .SubscribeCommand<SendPrimaryOwnerTransferCancelledEmails>()
+                .SubscribeCommand<SendPrimaryOwnerTransferAcceptedEmails>()
+                .SubscribeCommand<SendPrimaryOwnerTransferRefusedEmails>()
                 .SubscribeCommand<SendResetPasswordEmail>()
                 .SubscribeCommand<SendChangeEmailEmail>()
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
