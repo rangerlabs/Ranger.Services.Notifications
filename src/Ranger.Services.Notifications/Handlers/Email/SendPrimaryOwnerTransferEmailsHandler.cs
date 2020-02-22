@@ -39,7 +39,7 @@ namespace Ranger.Services.Notifications.Handlers
                 ownerEmail = message.OwnerEmail,
                 acceptLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&token={message.Token}&response={TransferPrimaryOwnershipResultEnum.Accept}",
                 rejectLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}",
-                cancelLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/cancel-transfer-ownership?correlationId={message.CorrelationId}"
+                cancelLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/cancel-ownership-transfer?correlationId={message.CorrelationId}"
             };
             try
             {
