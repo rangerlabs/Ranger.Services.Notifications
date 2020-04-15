@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ranger.Common;
+using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 using Ranger.Services.Notifications.Data;
 using SendGrid.Helpers.Mail;
@@ -10,18 +11,25 @@ namespace Ranger.Services.Notifications.Handlers
 {
     class SendPrimaryOwnerTransferEmailsHandler : ICommandHandler<SendPrimaryOwnerTransferEmails>
     {
+        private readonly TenantsHttpClient tenantsHttpClient;
         private readonly ILogger<SendPrimaryOwnerTransferEmailsHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendPrimaryOwnerTransferEmailsHandler(ILogger<SendPrimaryOwnerTransferEmailsHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendPrimaryOwnerTransferEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferEmailsHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
+            this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
         public async Task HandleAsync(SendPrimaryOwnerTransferEmails message, ICorrelationContext context)
         {
+            var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
+            if (apiResponse.IsError)
+            {
+                throw new Exception("No tenant was found for the provided tenant id");
+            }
             var personalizationData = new
             {
                 user = new
@@ -34,12 +42,12 @@ namespace Ranger.Services.Notifications.Handlers
                     lastname = message.OwnerLastName
                 },
                 organization = message.OrganizationName,
-                domain = message.Domain,
+                domain = apiResponse.Result.Domain,
                 transferEmail = message.TransferEmail,
                 ownerEmail = message.OwnerEmail,
-                acceptLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&token={message.Token}&response={TransferPrimaryOwnershipResultEnum.Accept}",
-                rejectLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}",
-                cancelLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/cancel-ownership-transfer?correlationId={message.CorrelationId}"
+                acceptLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&token={message.Token}&response={TransferPrimaryOwnershipResultEnum.Accept}",
+                rejectLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}",
+                cancelLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/cancel-ownership-transfer?correlationId={message.CorrelationId}"
             };
             try
             {

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using PusherServer;
 using Ranger.Common;
+using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 using Ranger.Services.Notifications.Data;
 
@@ -50,7 +51,9 @@ namespace Ranger.Services.Notifications
                     });
             });
 
-            services.AddEntityFrameworkNpgsql().AddDbContext<NotificationsDbContext>(options =>
+            services.AddTenantsHttpClient("http://tenants:8082", "tenantsApi", "cKprgh9wYKWcsm");
+
+            services.AddDbContext<NotificationsDbContext>(options =>
             {
                 options.UseNpgsql(configuration["cloudSql:ConnectionString"]);
             },

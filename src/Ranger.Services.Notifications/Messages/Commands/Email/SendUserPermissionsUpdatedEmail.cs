@@ -9,12 +9,12 @@ namespace Ranger.Services.Notifications
         public string UserId { get; }
         public string Email { get; }
         public string FirstName { get; }
-        public string Domain { get; }
+        public string TenantId { get; }
         public string Organization { get; }
         public string Role { get; }
         public IEnumerable<string> AuthorizedProjects { get; }
 
-        public SendUserPermissionsUpdatedEmail(string userId, string email, string firstName, string domain, string organization, string role, IEnumerable<string> authorizedProjects = null)
+        public SendUserPermissionsUpdatedEmail(string userId, string email, string firstName, string tenantId, string organization, string role, IEnumerable<string> authorizedProjects = null)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
@@ -31,9 +31,9 @@ namespace Ranger.Services.Notifications
                 throw new System.ArgumentNullException(nameof(firstName));
             }
 
-            if (string.IsNullOrWhiteSpace(domain))
+            if (string.IsNullOrWhiteSpace(tenantId))
             {
-                throw new System.ArgumentNullException(nameof(domain));
+                throw new System.ArgumentNullException(nameof(tenantId));
             }
 
             if (string.IsNullOrWhiteSpace(organization))
@@ -49,7 +49,7 @@ namespace Ranger.Services.Notifications
             this.UserId = userId;
             this.Email = email;
             this.FirstName = firstName;
-            this.Domain = domain;
+            this.TenantId = tenantId;
             this.Organization = organization;
             this.Role = role;
             this.AuthorizedProjects = authorizedProjects;

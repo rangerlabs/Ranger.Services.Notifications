@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ranger.Common;
+using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 using SendGrid.Helpers.Mail;
 
@@ -9,18 +10,25 @@ namespace Ranger.Services.Notifications
 {
     class SendNewUserEmailHandler : ICommandHandler<SendNewUserEmail>
     {
+        private readonly TenantsHttpClient tenantsHttpClient;
         private readonly ILogger<SendNewUserEmailHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendNewUserEmailHandler(ILogger<SendNewUserEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendNewUserEmailHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendNewUserEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
+            this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
         public async Task HandleAsync(SendNewUserEmail message, ICorrelationContext context)
         {
+            var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
+            if (apiResponse.IsError)
+            {
+                throw new Exception("No tenant was found for the provided tenant id");
+            }
             var personalizationData = new
             {
                 user = new
@@ -30,7 +38,7 @@ namespace Ranger.Services.Notifications
                 organization = message.Organization,
                 isUser = Enum.Parse<RolesEnum>(message.Role) == RolesEnum.User,
                 role = message.Role,
-                confirm = $"https://rangerlabs.io/confirm-user?domain={message.Domain}&userId={message.UserId}&token={message.Token}",
+                confirm = $"https://rangerlabs.io/confirm-user?domain={apiResponse.Result.Domain}&userId={message.UserId}&token={message.Token}",
                 authorizedProjects = message.AuthorizedProjects
             };
             try

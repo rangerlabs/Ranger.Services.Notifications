@@ -10,10 +10,10 @@ namespace Ranger.Services.Notifications
         public string TransferFirstName { get; }
         public string OwnerFirstName { get; }
         public string OwnerLastName { get; }
-        public string Domain { get; }
+        public string TenantId { get; }
         public string OrganizationName { get; }
 
-        public SendPrimaryOwnerTransferRefusedEmails(string transferEmail, string ownerEmail, string transferFirstName, string ownerFirstName, string ownerLastName, string domain, string organizationName)
+        public SendPrimaryOwnerTransferRefusedEmails(string transferEmail, string ownerEmail, string transferFirstName, string ownerFirstName, string ownerLastName, string tenantId, string organizationName)
         {
             if (string.IsNullOrWhiteSpace(transferEmail))
             {
@@ -35,9 +35,9 @@ namespace Ranger.Services.Notifications
             {
                 throw new System.ArgumentNullException(nameof(ownerLastName));
             }
-            if (string.IsNullOrWhiteSpace(domain))
+            if (string.IsNullOrWhiteSpace(tenantId))
             {
-                throw new System.ArgumentNullException(nameof(domain));
+                throw new System.ArgumentNullException(nameof(tenantId));
             }
             if (string.IsNullOrWhiteSpace(organizationName))
             {
@@ -48,7 +48,7 @@ namespace Ranger.Services.Notifications
             this.TransferFirstName = transferFirstName;
             this.OwnerFirstName = ownerFirstName;
             this.OwnerLastName = ownerLastName;
-            this.Domain = domain;
+            this.TenantId = tenantId;
             this.OrganizationName = organizationName;
         }
     }
