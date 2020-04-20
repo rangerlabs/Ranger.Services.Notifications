@@ -2,11 +2,10 @@ using Ranger.Common;
 
 namespace Ranger.Services.Notifications
 {
-    public class TenantResult : ContextTenant
+    public class TenantResult
     {
-        public TenantResult(string tenantId, string domain, string databasePassword, bool enabled) : base(tenantId, databasePassword, enabled)
-        { }
-
+        public string TenantId { get; set; }
+        public bool Enabled { get; set; }
         public string Domain { get; set; }
         public string OrganizationName { get; set; }
     }
