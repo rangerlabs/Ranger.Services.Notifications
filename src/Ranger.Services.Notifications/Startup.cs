@@ -51,18 +51,17 @@ namespace Ranger.Services.Notifications
                     });
             });
 
+            services.AddPollyPolicyRegistry();
             services.AddTenantsHttpClient("http://tenants:8082", "tenantsApi", "cKprgh9wYKWcsm");
 
             services.AddDbContext<NotificationsDbContext>(options =>
             {
                 options.UseNpgsql(configuration["cloudSql:ConnectionString"]);
-            },
-                ServiceLifetime.Transient
-            );
+            });
 
             services.AddTransient<INotificationsDbContextInitializer, NotificationsDbContextInitializer>();
 
-            services.AddSingleton<IEmailNotifier, EmailNotifier>();
+            services.AddTransient<IEmailNotifier, EmailNotifier>();
 
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
@@ -76,12 +75,12 @@ namespace Ranger.Services.Notifications
             services.AddDataProtection()
                 .ProtectKeysWithCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
                 .PersistKeysToDbContext<NotificationsDbContext>();
-            services.AddSingleton<IPusher>(s =>
+            services.AddTransient<IPusher>(s =>
                         {
                             var options = configuration.GetOptions<RangerPusherOptions>("pusher");
                             return new Pusher(options.AppId, options.Key, options.Secret, new PusherOptions { Cluster = options.Cluster, Encrypted = bool.Parse(options.Encrypted) });
                         });
-            services.AddSingleton<IPusherNotifier, PusherNotifier>();
+            services.AddTransient<IPusherNotifier, PusherNotifier>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -25,10 +25,6 @@ namespace Ranger.Services.Notifications.Handlers
         public async Task HandleAsync(SendResetPasswordEmail message, ICorrelationContext context)
         {
             var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
-            if (apiResponse.IsError)
-            {
-                throw new Exception("No tenant was found for the provided tenant id");
-            }
             var personalizationData = new
             {
                 user = new

@@ -19,10 +19,6 @@ namespace Ranger.Services.Notifications
         public async Task HandleAsync(SendPusherDomainUserPredefinedNotification message, ICorrelationContext context)
         {
             var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
-            if (apiResponse.IsError)
-            {
-                throw new Exception("No tenant was found for the provided tenant id");
-            }
             await pusherNotifier.SendDomainUserPredefinedNotification(context.CorrelationContextId.ToString(), message.BackendEventKey, apiResponse.Result.Domain, message.UserEmail, message.State);
         }
     }
