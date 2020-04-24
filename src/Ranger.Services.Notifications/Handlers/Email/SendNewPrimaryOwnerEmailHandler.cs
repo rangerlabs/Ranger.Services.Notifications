@@ -40,7 +40,7 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send new tenant owner email.");
+                logger.LogError(ex, "Failed to send new tenant owner email");
                 throw;
             }
 

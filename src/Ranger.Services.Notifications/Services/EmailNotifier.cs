@@ -22,7 +22,7 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "An exception occurred reading the SendGrid api key from configuration. Verify the 'sendGrid:apiKey' configuration section is set.");
+                logger.LogError(ex, "An exception occurred reading the SendGrid api key from configuration. Verify the 'sendGrid:apiKey' configuration section is set");
             }
             this.apiKey = apiKey;
             this.logger = logger;
@@ -32,12 +32,12 @@ namespace Ranger.Services.Notifications
         {
             if (to is null)
             {
-                throw new System.ArgumentException($"{nameof(to)} cannot be null.");
+                throw new System.ArgumentException($"{nameof(to)} cannot be null");
             }
 
             if (string.IsNullOrWhiteSpace(templateId))
             {
-                throw new System.ArgumentException($"{nameof(templateId)} cannot be null or whitespace.");
+                throw new System.ArgumentException($"{nameof(templateId)} cannot be null or whitespace");
             }
 
             var client = new SendGridClient(apiKey);
@@ -54,7 +54,7 @@ namespace Ranger.Services.Notifications
             if (!IsSuccessfulStatusCode(response))
             {
                 var body = await response.Body.ReadAsStringAsync();
-                throw new Exception($"Failed to send email to '{to.Email}'. SendGrid returned status code '{response.StatusCode}' with body '{body}'.");
+                throw new Exception($"Failed to send email to '{to.Email}'. SendGrid returned status code '{response.StatusCode}' with body '{body}'");
             }
         }
 

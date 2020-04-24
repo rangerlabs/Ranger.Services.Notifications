@@ -40,7 +40,7 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send change email email.");
+                logger.LogError(ex, "Failed to send change email email");
                 throw;
             }
         }

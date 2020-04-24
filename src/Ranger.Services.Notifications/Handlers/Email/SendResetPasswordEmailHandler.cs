@@ -41,7 +41,7 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send password reset email.");
+                logger.LogError(ex, "Failed to send password reset email");
                 throw;
             }
         }

@@ -49,7 +49,7 @@ namespace Ranger.Services.Notifications.Handlers.Email
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send primary ownership transfer cancelled emails.");
+                logger.LogError(ex, "Failed to send primary ownership transfer cancelled emails");
             }
 
             busPublisher.Publish(new SendPrimaryOwnerTransferCancelledEmailsSent(), context);

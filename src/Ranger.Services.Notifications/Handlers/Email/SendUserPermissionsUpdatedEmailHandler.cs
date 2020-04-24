@@ -43,7 +43,7 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send user permissions update email.");
+                logger.LogError(ex, "Failed to send user permissions update email");
                 throw;
             }
 

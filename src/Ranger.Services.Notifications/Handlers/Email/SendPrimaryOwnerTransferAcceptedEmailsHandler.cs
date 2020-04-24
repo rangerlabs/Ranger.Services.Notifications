@@ -50,7 +50,7 @@ namespace Ranger.Services.Notifications.Handlers.Email
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send primary ownership transfer accepted emails.");
+                logger.LogError(ex, "Failed to send primary ownership transfer accepted emails");
             }
 
             busPublisher.Publish(new SendPrimaryOwnerTransferAcceptedEmailsSent(), context);
