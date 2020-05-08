@@ -1,25 +1,24 @@
-using System;
 using System.Threading.Tasks;
 using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 
 namespace Ranger.Services.Notifications
 {
-    public class SendPusherDomainCustomNotificationHandler : ICommandHandler<SendPusherDomainUserCustomNotification>
+    public class SubscriptionUpdatedHandler : IEventHandler<SubscriptionUpdated>
     {
         private readonly IPusherNotifier pusherNotifier;
         private readonly TenantsHttpClient tenantsHttpClient;
 
-        public SendPusherDomainCustomNotificationHandler(TenantsHttpClient tenantsHttpClient, IPusherNotifier pusherNotifier)
+        public SubscriptionUpdatedHandler(TenantsHttpClient tenantsHttpClient, IPusherNotifier pusherNotifier)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.pusherNotifier = pusherNotifier;
         }
 
-        public async Task HandleAsync(SendPusherDomainUserCustomNotification message, ICorrelationContext context)
+        public async Task HandleAsync(SubscriptionUpdated message, ICorrelationContext context)
         {
             var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
-            await pusherNotifier.SendDomainCustomNotification(message.EventName, apiResponse.Result.Domain, message.Message);
+            await pusherNotifier.SendDomainCustomNotification("subscription-changed", "Your subscription has changed. Retrieving new subscription details", apiResponse.Result.Domain);
         }
     }
 }

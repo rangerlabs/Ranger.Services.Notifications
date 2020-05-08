@@ -15,6 +15,7 @@ using Ranger.Common;
 using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 using Ranger.Services.Notifications.Data;
+using Ranger.Services.Operations;
 
 namespace Ranger.Services.Notifications
 {
@@ -116,10 +117,12 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendPrimaryOwnerTransferRefusedEmails>()
                 .SubscribeCommand<SendResetPasswordEmail>()
                 .SubscribeCommand<SendChangeEmailEmail>()
+                .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
                 .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
-                .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
-                .SubscribeCommand<SendPusherDomainUserCustomNotification>();
+                .SubscribeCommand<SendPusherDomainUserCustomNotification>()
+                .SubscribeCommand<SendPusherDomainCustomNotification>()
+                .SubscribeEvent<SubscriptionUpdated>();
         }
 
 
