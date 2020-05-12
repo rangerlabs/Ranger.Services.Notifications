@@ -31,8 +31,8 @@ namespace Ranger.Services.Notifications
                 {
                     firstname = message.FirstName,
                 },
-                organization = message.Organization,
-                change = $"https://rangerlabs.io/email-change?={apiResponse.Result.Domain}&userId={message.UserId}&token={message.Token}"
+                organization = apiResponse.Result.OrganizationName,
+                change = $"https://rangerlabs.io/email-change?domain={apiResponse.Result.Domain}&token={message.Token}"
             };
             try
             {

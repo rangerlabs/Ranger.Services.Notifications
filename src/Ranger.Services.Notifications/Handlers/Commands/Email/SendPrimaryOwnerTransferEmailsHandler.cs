@@ -37,7 +37,7 @@ namespace Ranger.Services.Notifications.Handlers
                     firstname = message.OwnerFirstName,
                     lastname = message.OwnerLastName
                 },
-                organization = message.OrganizationName,
+                organization = apiResponse.Result.OrganizationName,
                 domain = apiResponse.Result.Domain,
                 transferEmail = message.TransferEmail,
                 ownerEmail = message.OwnerEmail,

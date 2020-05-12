@@ -37,7 +37,7 @@ namespace Ranger.Services.Notifications.Handlers.Email
                 },
                 transferEmail = message.TransferEmail,
                 ownerEmail = message.OwnerEmail,
-                organization = message.OrganizationName,
+                organization = apiResponse.Result.OrganizationName,
                 domain = apiResponse.Result.Domain,
                 loginLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/login"
             };

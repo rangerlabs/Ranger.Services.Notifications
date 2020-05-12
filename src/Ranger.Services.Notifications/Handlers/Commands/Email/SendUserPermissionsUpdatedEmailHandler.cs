@@ -31,8 +31,8 @@ namespace Ranger.Services.Notifications
                 {
                     firstname = message.FirstName,
                 },
-                domain = apiResponse.Result.TenantId,
-                organization = message.Organization,
+                domain = apiResponse.Result.Domain,
+                organization = apiResponse.Result.OrganizationName,
                 isUser = Enum.Parse<RolesEnum>(message.Role) == RolesEnum.User,
                 role = message.Role,
                 authorizedProjects = message.AuthorizedProjects

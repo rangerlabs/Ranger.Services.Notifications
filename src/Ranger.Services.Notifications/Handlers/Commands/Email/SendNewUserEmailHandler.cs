@@ -31,7 +31,8 @@ namespace Ranger.Services.Notifications
                 {
                     firstname = message.FirstName,
                 },
-                organization = message.Organization,
+                organization = apiResponse.Result.OrganizationName,
+                domain = apiResponse.Result.Domain,
                 isUser = Enum.Parse<RolesEnum>(message.Role) == RolesEnum.User,
                 role = message.Role,
                 confirm = $"https://rangerlabs.io/confirm-user?domain={apiResponse.Result.Domain}&userId={message.UserId}&token={message.Token}",

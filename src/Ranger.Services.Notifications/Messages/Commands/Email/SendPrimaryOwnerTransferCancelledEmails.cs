@@ -11,9 +11,8 @@ namespace Ranger.Services.Notifications
         public string OwnerFirstName { get; }
         public string OwnerLastName { get; }
         public string TenantId { get; }
-        public string OrganizationName { get; }
 
-        public SendPrimaryOwnerTransferCancelledEmails(string transferEmail, string ownerEmail, string transferFirstName, string ownerFirstName, string ownerLastName, string tenantId, string organizationName)
+        public SendPrimaryOwnerTransferCancelledEmails(string transferEmail, string ownerEmail, string transferFirstName, string ownerFirstName, string ownerLastName, string tenantId)
         {
             if (string.IsNullOrWhiteSpace(transferEmail))
             {
@@ -39,17 +38,12 @@ namespace Ranger.Services.Notifications
             {
                 throw new System.ArgumentNullException(nameof(tenantId));
             }
-            if (string.IsNullOrWhiteSpace(organizationName))
-            {
-                throw new System.ArgumentNullException(nameof(organizationName));
-            }
             this.TransferEmail = transferEmail;
             this.OwnerEmail = ownerEmail;
             this.TransferFirstName = transferFirstName;
             this.OwnerFirstName = ownerFirstName;
             this.OwnerLastName = ownerLastName;
             this.TenantId = tenantId;
-            this.OrganizationName = organizationName;
         }
     }
 }

@@ -5,13 +5,12 @@ namespace Ranger.Services.Notifications
     [MessageNamespace("notifications")]
     public class SendResetPasswordEmail : ICommand
     {
-        public SendResetPasswordEmail(string firstName, string email, string tenantId, string userId, string organization, string token)
+        public SendResetPasswordEmail(string firstName, string email, string tenantId, string userId, string token)
         {
             this.FirstName = firstName;
             this.UserId = userId;
             this.Email = email;
             this.TenantId = tenantId;
-            this.Organization = organization;
             this.Token = token;
 
         }
@@ -19,7 +18,6 @@ namespace Ranger.Services.Notifications
         public string UserId { get; }
         public string Email { get; }
         public string TenantId { get; }
-        public string Organization { get; }
         public string Token { get; }
     }
 }
