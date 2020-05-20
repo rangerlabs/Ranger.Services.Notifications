@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using PusherServer;
 using Ranger.Common;
 using Ranger.InternalHttpClient;
+using Ranger.Monitoring.HealthChecks;
 using Ranger.RabbitMQ;
 using Ranger.Services.Notifications.Data;
 using Ranger.Services.Operations;
@@ -82,6 +83,11 @@ namespace Ranger.Services.Notifications
                             return new Pusher(options.AppId, options.Key, options.Secret, new PusherOptions { Cluster = options.Cluster, Encrypted = bool.Parse(options.Encrypted) });
                         });
             services.AddTransient<IPusherNotifier, PusherNotifier>();
+
+            services.AddLiveHealthCheck();
+            services.AddEntityFrameworkHealthCheck<NotificationsDbContext>();
+            services.AddDockerImageTagHealthCheck();
+            services.AddRabbitMQHealthCheck();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -99,6 +105,11 @@ namespace Ranger.Services.Notifications
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks();
+                endpoints.MapLiveTagHealthCheck();
+                endpoints.MapEfCoreTagHealthCheck();
+                endpoints.MapDockerImageTagHealthCheck();
+                endpoints.MapRabbitMQHealthCheck();
             });
             this.busSubscriber = app.UseRabbitMQ()
                 .SubscribeCommand<SendNewPrimaryOwnerEmail>((c, e) =>
