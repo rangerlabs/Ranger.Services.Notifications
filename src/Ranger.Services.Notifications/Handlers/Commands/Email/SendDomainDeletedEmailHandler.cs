@@ -37,8 +37,8 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send delete domain email.");
-                throw new RangerException("Failed to send delete domain email.");
+                logger.LogError(ex, "Failed to send delete domain email");
+                throw new RangerException("Failed to send delete domain email");
             }
 
             busPublisher.Publish(new SendDomainDeletedEmailSent(), context);

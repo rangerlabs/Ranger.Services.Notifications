@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ranger.Common;
+using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 using SendGrid.Helpers.Mail;
 
@@ -9,26 +10,29 @@ namespace Ranger.Services.Notifications
 {
     class SendUserPermissionsUpdatedHandler : ICommandHandler<SendUserPermissionsUpdatedEmail>
     {
+        private readonly TenantsHttpClient tenantsHttpClient;
         private readonly ILogger<SendUserPermissionsUpdatedHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendUserPermissionsUpdatedHandler(ILogger<SendUserPermissionsUpdatedHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendUserPermissionsUpdatedHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendUserPermissionsUpdatedHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
+            this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
         public async Task HandleAsync(SendUserPermissionsUpdatedEmail message, ICorrelationContext context)
         {
+            var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
             var personalizationData = new
             {
                 user = new
                 {
                     firstname = message.FirstName,
                 },
-                domain = message.Domain,
-                organization = message.Organization,
+                domain = apiResponse.Result.Domain,
+                organization = apiResponse.Result.OrganizationName,
                 isUser = Enum.Parse<RolesEnum>(message.Role) == RolesEnum.User,
                 role = message.Role,
                 authorizedProjects = message.AuthorizedProjects
@@ -39,7 +43,7 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send user permissions update email.");
+                logger.LogError(ex, "Failed to send user permissions update email");
                 throw;
             }
 

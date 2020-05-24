@@ -22,14 +22,14 @@ namespace Ranger.Services.Notifications
             BackendEventKey = "TenantOnboarding",
             OperationsState = OperationsStateEnum.Completed,
             PusherEventName = "tenant-onboard",
-            Text = "Your domain has been successfully created. Check your email to complete your registration."
+            Text = "Your domain has been successfully created. Check your email to complete your registration"
         };
         private static FrontendNotification TenantOnboardingRejectedNotification = new FrontendNotification()
         {
             BackendEventKey = "TenantOnboarding",
             OperationsState = OperationsStateEnum.Rejected,
             PusherEventName = "tenant-onboard",
-            Text = "An issue arose creating your domain. We'll investigate and be in touch shortly."
+            Text = "An issue arose creating your domain. We'll investigate and be in touch shortly"
         };
         private static FrontendNotification TokenRefreshNotification = new FrontendNotification()
         {
@@ -41,7 +41,7 @@ namespace Ranger.Services.Notifications
         {
             BackendEventKey = "PermissionsUpdated",
             PusherEventName = "permissions-updated",
-            Text = "Your permissions were just updated and will be available to you momentarily. Check your email for more detailed information."
+            Text = "Your permissions were just updated and will be available to you momentarily. Check your email for more detailed information"
         };
         private static FrontendNotification ForceSignoutNotification = new FrontendNotification()
         {

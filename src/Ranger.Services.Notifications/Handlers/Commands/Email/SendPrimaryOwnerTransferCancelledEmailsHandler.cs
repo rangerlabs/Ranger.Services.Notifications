@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ranger.Common;
+using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
 using SendGrid.Helpers.Mail;
 
@@ -12,15 +13,18 @@ namespace Ranger.Services.Notifications.Handlers.Email
         private readonly ILogger<SendPrimaryOwnerTransferCancelledEmails> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
+        private readonly TenantsHttpClient tenantsHttpClient;
 
-        public SendPrimaryOwnerTransferCancelledEmailsHandler(ILogger<SendPrimaryOwnerTransferCancelledEmails> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendPrimaryOwnerTransferCancelledEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferCancelledEmails> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
+            this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
         }
         public async Task HandleAsync(SendPrimaryOwnerTransferCancelledEmails message, ICorrelationContext context)
         {
+            var apiResponse = await tenantsHttpClient.GetTenantByIdAsync<TenantResult>(message.TenantId);
             var personalizationData = new
             {
                 user = new
@@ -34,9 +38,9 @@ namespace Ranger.Services.Notifications.Handlers.Email
                 },
                 transferEmail = message.TransferEmail,
                 ownerEmail = message.OwnerEmail,
-                organization = message.OrganizationName,
-                domain = message.Domain,
-                loginLink = $"https://{message.Domain.ToLowerInvariant()}.rangerlabs.io/login",
+                organization = apiResponse.Result.OrganizationName,
+                domain = apiResponse.Result.Domain,
+                loginLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/login",
             };
             try
             {
@@ -45,7 +49,7 @@ namespace Ranger.Services.Notifications.Handlers.Email
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send primary ownership transfer cancelled emails.");
+                logger.LogError(ex, "Failed to send primary ownership transfer cancelled emails");
             }
 
             busPublisher.Publish(new SendPrimaryOwnerTransferCancelledEmailsSent(), context);

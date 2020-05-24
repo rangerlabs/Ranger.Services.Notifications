@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Ranger.Logging;
+using Ranger.Monitoring.Logging;
 using Ranger.Services.Notifications.Data;
 
 namespace Ranger.Services.Notifications

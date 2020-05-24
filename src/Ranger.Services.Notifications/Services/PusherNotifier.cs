@@ -53,5 +53,14 @@ namespace Ranger.Services.Notifications
                );
             }
         }
+
+        public async Task SendDomainCustomNotification(string eventName, string message, string domain)
+        {
+            await pusher.TriggerAsync(
+                $"private-{domain}",
+                eventName,
+                new { message = message }
+            );
+        }
     }
 }

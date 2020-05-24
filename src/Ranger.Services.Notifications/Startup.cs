@@ -12,8 +12,11 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using PusherServer;
 using Ranger.Common;
+using Ranger.InternalHttpClient;
+using Ranger.Monitoring.HealthChecks;
 using Ranger.RabbitMQ;
 using Ranger.Services.Notifications.Data;
+using Ranger.Services.Operations;
 
 namespace Ranger.Services.Notifications
 {
@@ -50,16 +53,17 @@ namespace Ranger.Services.Notifications
                     });
             });
 
-            services.AddEntityFrameworkNpgsql().AddDbContext<NotificationsDbContext>(options =>
+            services.AddPollyPolicyRegistry();
+            services.AddTenantsHttpClient("http://tenants:8082", "tenantsApi", "cKprgh9wYKWcsm");
+
+            services.AddDbContext<NotificationsDbContext>(options =>
             {
                 options.UseNpgsql(configuration["cloudSql:ConnectionString"]);
-            },
-                ServiceLifetime.Transient
-            );
+            });
 
             services.AddTransient<INotificationsDbContextInitializer, NotificationsDbContextInitializer>();
 
-            services.AddSingleton<IEmailNotifier, EmailNotifier>();
+            services.AddTransient<IEmailNotifier, EmailNotifier>();
 
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
@@ -73,12 +77,17 @@ namespace Ranger.Services.Notifications
             services.AddDataProtection()
                 .ProtectKeysWithCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
                 .PersistKeysToDbContext<NotificationsDbContext>();
-            services.AddSingleton<IPusher>(s =>
+            services.AddTransient<IPusher>(s =>
                         {
                             var options = configuration.GetOptions<RangerPusherOptions>("pusher");
                             return new Pusher(options.AppId, options.Key, options.Secret, new PusherOptions { Cluster = options.Cluster, Encrypted = bool.Parse(options.Encrypted) });
                         });
-            services.AddSingleton<IPusherNotifier, PusherNotifier>();
+            services.AddTransient<IPusherNotifier, PusherNotifier>();
+
+            services.AddLiveHealthCheck();
+            services.AddEntityFrameworkHealthCheck<NotificationsDbContext>();
+            services.AddDockerImageTagHealthCheck();
+            services.AddRabbitMQHealthCheck();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -96,6 +105,11 @@ namespace Ranger.Services.Notifications
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks();
+                endpoints.MapLiveTagHealthCheck();
+                endpoints.MapEfCoreTagHealthCheck();
+                endpoints.MapDockerImageTagHealthCheck();
+                endpoints.MapRabbitMQHealthCheck();
             });
             this.busSubscriber = app.UseRabbitMQ()
                 .SubscribeCommand<SendNewPrimaryOwnerEmail>((c, e) =>
@@ -114,10 +128,12 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendPrimaryOwnerTransferRefusedEmails>()
                 .SubscribeCommand<SendResetPasswordEmail>()
                 .SubscribeCommand<SendChangeEmailEmail>()
+                .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
                 .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
-                .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
-                .SubscribeCommand<SendPusherDomainUserCustomNotification>();
+                .SubscribeCommand<SendPusherDomainUserCustomNotification>()
+                .SubscribeCommand<SendPusherDomainCustomNotification>()
+                .SubscribeEvent<SubscriptionUpdated>();
         }
 
 
