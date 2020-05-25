@@ -76,8 +76,11 @@ namespace Ranger.Services.Notifications
                 });
 
             services.AddDataProtection()
+                .SetApplicationName("Notifications")
                 .ProtectKeysWithCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
+                .UnprotectKeysWithAnyCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
                 .PersistKeysToDbContext<NotificationsDbContext>();
+
             services.AddTransient<IPusher>(s =>
                         {
                             var options = configuration.GetOptions<RangerPusherOptions>("pusher");
