@@ -15,13 +15,15 @@ namespace Ranger.Services.Notifications.Handlers
         private readonly ILogger<SendPrimaryOwnerTransferEmailsHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
+        private readonly SendGridOptions sendGridOptions;
 
-        public SendPrimaryOwnerTransferEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferEmailsHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendPrimaryOwnerTransferEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferEmailsHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
+            this.sendGridOptions = sendGridOptions;
         }
         public async Task HandleAsync(SendPrimaryOwnerTransferEmails message, ICorrelationContext context)
         {
@@ -41,9 +43,9 @@ namespace Ranger.Services.Notifications.Handlers
                 domain = apiResponse.Result.Domain,
                 transferEmail = message.TransferEmail,
                 ownerEmail = message.OwnerEmail,
-                acceptLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&token={message.Token}&response={TransferPrimaryOwnershipResultEnum.Accept}",
-                rejectLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}",
-                cancelLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/cancel-ownership-transfer?correlationId={message.CorrelationId}"
+                acceptLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.{sendGridOptions.Host}/transfer-ownership?correlationId={message.CorrelationId}&token={message.Token}&response={TransferPrimaryOwnershipResultEnum.Accept}",
+                rejectLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.{sendGridOptions.Host}/transfer-ownership?correlationId={message.CorrelationId}&response={TransferPrimaryOwnershipResultEnum.Reject}",
+                cancelLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.{sendGridOptions.Host}/cancel-ownership-transfer?correlationId={message.CorrelationId}"
             };
             try
             {

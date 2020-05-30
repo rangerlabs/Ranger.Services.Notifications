@@ -12,14 +12,16 @@ namespace Ranger.Services.Notifications.Handlers.Email
         private readonly ILogger<SendPrimaryOwnerTransferRefusedEmails> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
+        private readonly SendGridOptions sendGridOptions;
         private readonly TenantsHttpClient tenantsHttpClient;
 
-        public SendPrimaryOwnerTransferRefusedEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferRefusedEmails> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendPrimaryOwnerTransferRefusedEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferRefusedEmails> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
+            this.sendGridOptions = sendGridOptions;
         }
         public async Task HandleAsync(SendPrimaryOwnerTransferRefusedEmails message, ICorrelationContext context)
         {
@@ -39,7 +41,7 @@ namespace Ranger.Services.Notifications.Handlers.Email
                 ownerEmail = message.OwnerEmail,
                 organization = apiResponse.Result.OrganizationName,
                 domain = apiResponse.Result.Domain,
-                loginLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.rangerlabs.io/login"
+                loginLink = $"https://{apiResponse.Result.Domain.ToLowerInvariant()}.{sendGridOptions.Host}/login"
             };
             try
             {

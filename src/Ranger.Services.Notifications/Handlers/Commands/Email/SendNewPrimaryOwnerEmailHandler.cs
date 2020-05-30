@@ -14,13 +14,15 @@ namespace Ranger.Services.Notifications.Handlers
         private readonly TenantsHttpClient tenantsHttpClient;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
+        private readonly SendGridOptions sendGridOptions;
 
-        public SendNewPrimaryOwnerEmailHandler(ILogger<SendNewPrimaryOwnerEmailHandler> logger, TenantsHttpClient tenantsHttpClient, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendNewPrimaryOwnerEmailHandler(ILogger<SendNewPrimaryOwnerEmailHandler> logger, TenantsHttpClient tenantsHttpClient, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.logger = logger;
             this.tenantsHttpClient = tenantsHttpClient;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
+            this.sendGridOptions = sendGridOptions;
         }
         public async Task HandleAsync(SendNewPrimaryOwnerEmail message, ICorrelationContext context)
         {
@@ -32,7 +34,7 @@ namespace Ranger.Services.Notifications.Handlers
                     firstname = message.FirstName,
                 },
                 domain = apiResponse.Result.Domain,
-                confirm = $"https://rangerlabs.io/confirm-domain?domain={apiResponse.Result.Domain}&token={message.Token}"
+                confirm = $"https://{sendGridOptions.Host}/confirm-domain?domain={apiResponse.Result.Domain}&token={message.Token}"
             };
             try
             {

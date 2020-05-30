@@ -13,12 +13,12 @@ namespace Ranger.Services.Notifications
         private EmailAddress from = new EmailAddress("notifications@rangerlabs.io");
         private string apiKey = "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";
 
-        public EmailNotifier(IConfiguration configuration, ILogger<EmailNotifier> logger)
+        public EmailNotifier(SendGridOptions sendGridOptions, ILogger<EmailNotifier> logger)
         {
             string apiKey = "";
             try
             {
-                apiKey = configuration["sendGrid:apiKey"];
+                apiKey = sendGridOptions.ApiKey;
             }
             catch (Exception ex)
             {

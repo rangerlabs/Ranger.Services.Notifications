@@ -96,6 +96,7 @@ namespace Ranger.Services.Notifications
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterInstance<SendGridOptions>(configuration.GetOptions<SendGridOptions>("sendGrid"));
             builder.AddRabbitMq();
         }
 

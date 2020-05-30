@@ -14,13 +14,15 @@ namespace Ranger.Services.Notifications.Handlers
         private readonly ILogger<SendResetPasswordEmailHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
+        private readonly SendGridOptions sendGridOptions;
 
-        public SendResetPasswordEmailHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendResetPasswordEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendResetPasswordEmailHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendResetPasswordEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
             this.emailNotifier = emailNotifier;
             this.busPublisher = busPublisher;
+            this.sendGridOptions = sendGridOptions;
         }
         public async Task HandleAsync(SendResetPasswordEmail message, ICorrelationContext context)
         {
@@ -33,7 +35,7 @@ namespace Ranger.Services.Notifications.Handlers
                 },
                 domain = apiResponse.Result.Domain,
                 organization = apiResponse.Result.OrganizationName,
-                reset = $"https://rangerlabs.io/password-reset?domain={apiResponse.Result.Domain}&userId={message.UserId}&token={message.Token}"
+                reset = $"https://{sendGridOptions.Host}/password-reset?domain={apiResponse.Result.Domain}&userId={message.UserId}&token={message.Token}"
             };
             try
             {
