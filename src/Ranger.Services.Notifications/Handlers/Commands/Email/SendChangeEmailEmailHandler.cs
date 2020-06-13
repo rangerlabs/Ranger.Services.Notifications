@@ -43,8 +43,8 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send change email email");
-                throw;
+                logger.LogError(ex, $"An unexpected error occurred sending the necessary email");
+                throw new RangerException($"An unexpected error occurred sending the necessary email");
             }
         }
     }

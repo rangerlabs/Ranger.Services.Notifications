@@ -46,8 +46,8 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send new user email");
-                throw;
+                logger.LogError(ex, "An unexpected error occurred sending the necessary email");
+                throw new RangerException("An unexpected error occurred sending the necessary email");
             }
 
             busPublisher.Publish(new SendNewUserEmailSent(), context);

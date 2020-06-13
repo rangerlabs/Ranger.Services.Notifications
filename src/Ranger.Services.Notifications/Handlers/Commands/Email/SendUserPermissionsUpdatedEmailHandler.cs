@@ -43,8 +43,8 @@ namespace Ranger.Services.Notifications
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send user permissions update email");
-                throw;
+                logger.LogError(ex, "An unexpected error occurred sending the necessary emails");
+                throw new RangerException("An unexpected error occurred sending the necessary emails");
             }
 
             busPublisher.Publish(new SendUserPermissionsUpdatedEmailSent(), context);

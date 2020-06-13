@@ -54,8 +54,8 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send primary ownership transfer emails");
-                throw new RangerException("Failed to send primary ownership transfer emails");
+                logger.LogError(ex, "An unexpected error occurred sending the necessary emails");
+                throw new RangerException("An unexpected error occurred sending the necessary emails");
             }
 
             busPublisher.Publish(new SendPrimaryOwnerTransferEmailsSent(), context);

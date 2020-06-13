@@ -43,8 +43,8 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send password reset email");
-                throw;
+                logger.LogError(ex, "An unexpected error occurred sending the necessary emails");
+                throw new RangerException("An unexpected error occurred sending the necessary emails");
             }
         }
     }

@@ -42,8 +42,8 @@ namespace Ranger.Services.Notifications.Handlers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send new tenant owner email");
-                throw;
+                logger.LogError(ex, "An unexpected error occurred sending the necessary email");
+                throw new RangerException("An unexpected error occurred sending the necessary email");
             }
 
             busPublisher.Publish(new SendNewPrimaryOwnerEmailSent(), context);
