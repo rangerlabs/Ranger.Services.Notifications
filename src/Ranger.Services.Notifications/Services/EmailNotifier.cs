@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -32,12 +32,12 @@ namespace Ranger.Services.Notifications
         {
             if (to is null)
             {
-                throw new System.ArgumentException($"{nameof(to)} cannot be null");
+                throw new ArgumentException($"{nameof(to)} cannot be null");
             }
 
             if (string.IsNullOrWhiteSpace(templateId))
             {
-                throw new System.ArgumentException($"{nameof(templateId)} cannot be null or whitespace");
+                throw new ArgumentException($"{nameof(templateId)} cannot be null or whitespace");
             }
 
             var client = new SendGridClient(apiKey);
@@ -57,6 +57,39 @@ namespace Ranger.Services.Notifications
                 throw new Exception($"Failed to send email to '{to.Email}'. SendGrid returned status code '{response.StatusCode}' with body '{body}'");
             }
         }
+
+        public async Task SendAsync(IEnumerable<EmailAddress> to, string templateId, object templateData)
+        {
+            if (to is default(IEnumerable<EmailAddress>))
+            {
+                throw new ArgumentException($"{nameof(to)} cannot be default");
+            }
+            if (string.IsNullOrWhiteSpace(templateId))
+            {
+                throw new ArgumentException($"{nameof(templateId)} cannot be null or whitespace");
+            }
+
+            var client = new SendGridClient(apiKey);
+            var msg = new SendGridMessage()
+            {
+                From = this.from,
+                TemplateId = templateId,
+            };
+            foreach (var email in to)
+            {
+                msg.AddTo(email);
+            }
+            msg.SetTemplateData(templateData);
+
+            var response = await client.SendEmailAsync(msg);
+            if (!IsSuccessfulStatusCode(response))
+            {
+                var body = await response.Body.ReadAsStringAsync();
+                throw new Exception($"Failed to send bulk email. SendGrid returned status code '{response.StatusCode}' with body '{body}'");
+            }
+        }
+
+
 
         private bool IsSuccessfulStatusCode(Response response)
         {

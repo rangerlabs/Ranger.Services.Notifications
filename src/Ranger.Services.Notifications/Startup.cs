@@ -138,7 +138,8 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
                 .SubscribeCommand<SendPusherDomainUserCustomNotification>()
                 .SubscribeCommand<SendPusherDomainCustomNotification>()
-                .SubscribeEvent<SubscriptionUpdated>();
+                .SubscribeEvent<SubscriptionUpdated>()
+                .SubscribeCommand<SendTenantDomainUpdatedEmails>();
         }
 
 
