@@ -14,11 +14,11 @@ namespace Ranger.Services.Notifications.Handlers.Commands.Email
     {
         private readonly TenantsHttpClient tenantsHttpClient;
         private readonly IdentityHttpClient identityHttpClient;
-        private readonly EmailNotifier emailNotifier;
+        private readonly IEmailNotifier emailNotifier;
         private readonly SendGridOptions sendGridOptions;
         private readonly ILogger<SendTenantDomainUpdatedEmailsHandler> logger;
 
-        public SendTenantDomainUpdatedEmailsHandler(TenantsHttpClient tenantsHttpClient, IdentityHttpClient identityHttpClient, EmailNotifier emailNotifier, SendGridOptions sendGridOptions, ILogger<SendTenantDomainUpdatedEmailsHandler> logger)
+        public SendTenantDomainUpdatedEmailsHandler(TenantsHttpClient tenantsHttpClient, IdentityHttpClient identityHttpClient, IEmailNotifier emailNotifier, SendGridOptions sendGridOptions, ILogger<SendTenantDomainUpdatedEmailsHandler> logger)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.identityHttpClient = identityHttpClient;
