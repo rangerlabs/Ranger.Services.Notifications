@@ -10,5 +10,6 @@ namespace Ranger.Services.Notifications
         Task SendDomainUserPredefinedNotification(string id, string backendEventName, string domain, string userEmail, OperationsStateEnum state);
         Task SendDomainFrontendNotification(string id, string backendEventName, string domain, OperationsStateEnum state);
         Task SendDomainCustomNotification(string eventName, string domain, string message);
+        Task SendOrganizationDomainUpdatedNotification(string eventName, string domain, string message, string newDomain);
     }
 }

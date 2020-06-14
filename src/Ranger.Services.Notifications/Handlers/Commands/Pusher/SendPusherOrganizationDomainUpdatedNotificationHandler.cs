@@ -19,7 +19,7 @@ namespace Ranger.Services.Notifications
 
         public async Task HandleAsync(SendPusherOrganizationDomainUpdatedNotification message, ICorrelationContext context)
         {
-            await pusherNotifier.SendDomainCustomNotification(message.EventName, message.Message, message.OldDomain);
+            await pusherNotifier.SendOrganizationDomainUpdatedNotification(message.EventName, message.Message, message.OldDomain, message.NewDomain);
         }
     }
 }

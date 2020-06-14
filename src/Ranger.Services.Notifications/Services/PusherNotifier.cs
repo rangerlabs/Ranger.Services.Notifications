@@ -62,5 +62,15 @@ namespace Ranger.Services.Notifications
                 new { message = message }
             );
         }
+
+        public async Task SendOrganizationDomainUpdatedNotification(string eventName, string domain, string message, string newDomain)
+        {
+            await pusher.TriggerAsync(
+                $"private-{domain}",
+                eventName,
+                new { message = message, newDomain = newDomain }
+            );
+
+        }
     }
 }
