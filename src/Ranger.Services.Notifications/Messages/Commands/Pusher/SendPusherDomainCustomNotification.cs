@@ -1,8 +1,7 @@
 using System;
 using Ranger.RabbitMQ;
-using Ranger.Services.Notifications.Data;
 
-namespace Ranger.Services.Operations
+namespace Ranger.Services.Notifications
 {
     [MessageNamespace("notifications")]
     public class SendPusherDomainCustomNotification : ICommand
@@ -11,7 +10,7 @@ namespace Ranger.Services.Operations
         public string Message { get; }
         public string TenantId { get; }
 
-        public SendPusherDomainCustomNotification(string eventName, string message, string tenantId, string userEmail)
+        public SendPusherDomainCustomNotification(string eventName, string message, string tenantId)
         {
             this.EventName = eventName;
             this.Message = message;
