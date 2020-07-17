@@ -31,7 +31,7 @@ namespace Ranger.Services.Notifications.Handlers
             };
             try
             {
-                await emailNotifier.SendAsync(new EmailAddress(message.Email), "d-42f1287584594bc7a18fdac60bba0382", personalizationData);
+                await emailNotifier.SendAsync("info@rangerlabs.io", "d-42f1287584594bc7a18fdac60bba0382", personalizationData);
             }
             catch (Exception ex)
             {
