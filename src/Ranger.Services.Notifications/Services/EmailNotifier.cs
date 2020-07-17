@@ -10,7 +10,7 @@ namespace Ranger.Services.Notifications
     public class EmailNotifier : IEmailNotifier
     {
         private readonly ILogger<EmailNotifier> logger;
-        private EmailAddress from = new EmailAddress("notifications@rangerlabs.io");
+        private EmailAddress from = new EmailAddress("notifications@rangerlabs.io", "Ranger Notifications");
         private string apiKey = "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";
 
         public EmailNotifier(SendGridOptions sendGridOptions, ILogger<EmailNotifier> logger)
@@ -28,7 +28,7 @@ namespace Ranger.Services.Notifications
             this.logger = logger;
         }
 
-        public async Task SendAsync(EmailAddress to, string templateId, object templateData)
+        public async Task SendAsync(EmailAddress to, string templateId, object templateData, EmailAddress from = null)
         {
             if (to is null)
             {
@@ -44,7 +44,7 @@ namespace Ranger.Services.Notifications
 
             var msg = new SendGridMessage()
             {
-                From = this.from,
+                From = from ?? this.from,
                 TemplateId = templateId,
             };
             msg.AddTo(to);
@@ -58,7 +58,7 @@ namespace Ranger.Services.Notifications
             }
         }
 
-        public async Task SendAsync(IEnumerable<EmailAddress> to, string templateId, object templateData)
+        public async Task SendAsync(IEnumerable<EmailAddress> to, string templateId, object templateData, EmailAddress from = null)
         {
             if (to is default(IEnumerable<EmailAddress>))
             {
@@ -72,7 +72,7 @@ namespace Ranger.Services.Notifications
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = this.from,
+                From = from ?? this.from,
                 TemplateId = templateId,
             };
             foreach (var email in to)

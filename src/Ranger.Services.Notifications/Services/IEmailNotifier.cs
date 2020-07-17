@@ -6,7 +6,7 @@ namespace Ranger.Services.Notifications
 {
     public interface IEmailNotifier
     {
-        Task SendAsync(EmailAddress to, string templateId, object templateData);
-        Task SendAsync(IEnumerable<EmailAddress> to, string templateId, object templateData);
+        Task SendAsync(EmailAddress to, string templateId, object templateData, EmailAddress from = null);
+        Task SendAsync(IEnumerable<EmailAddress> to, string templateId, object templateData, EmailAddress from = null);
     }
 }

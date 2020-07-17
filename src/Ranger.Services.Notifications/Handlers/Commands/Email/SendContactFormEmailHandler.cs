@@ -24,12 +24,11 @@ namespace Ranger.Services.Notifications.Handlers
             var personalizationData = new
             {
                 organization = message.Organization,
-                email = message.Email,
                 message = message.Message
             };
             try
             {
-                await emailNotifier.SendAsync(new EmailAddress("info@rangerlabs.io"), "d-42f1287584594bc7a18fdac60bba0382", personalizationData);
+                await emailNotifier.SendAsync(new EmailAddress("info@rangerlabs.io"), "d-42f1287584594bc7a18fdac60bba0382", personalizationData, new EmailAddress(message.Email, message.Name));
             }
             catch (Exception ex)
             {
