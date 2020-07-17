@@ -135,6 +135,7 @@ namespace Ranger.Services.Notifications
                 .SubscribeCommand<SendPrimaryOwnerTransferAcceptedEmails>()
                 .SubscribeCommand<SendPrimaryOwnerTransferRefusedEmails>()
                 .SubscribeCommand<SendResetPasswordEmail>()
+                .SubscribeCommand<SendContactFormEmail>()
                 .SubscribeCommand<SendChangeEmailEmail>()
                 .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
                 .SubscribeCommand<SendPusherDomainFrontendNotification>()
