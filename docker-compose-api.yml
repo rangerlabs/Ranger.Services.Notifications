@@ -6,14 +6,9 @@ services:
         ports:
             - '8084:8084'
         networks:
-            - notifications
             - ranger
 
 networks:
     ranger:
         name: ranger-network
-        external: true
-
-    notifications:
-        name: notifications-network
         external: true
