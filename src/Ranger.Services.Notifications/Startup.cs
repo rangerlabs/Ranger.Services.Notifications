@@ -106,7 +106,6 @@ namespace Ranger.Services.Notifications
         public void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
-            applicationLifetime.ApplicationStopping.Register(OnShutdown);
 
             app.UseRouting();
             app.UseAuthentication();
@@ -119,7 +118,7 @@ namespace Ranger.Services.Notifications
                 endpoints.MapDockerImageTagHealthCheck();
                 endpoints.MapRabbitMQHealthCheck();
             });
-            this.busSubscriber = app.UseRabbitMQ()
+            this.busSubscriber = app.UseRabbitMQ(applicationLifetime)
                 .SubscribeCommand<SendNewPrimaryOwnerEmail>((c, e) =>
                    new SendNewPrimaryOwnerEmailRejected(e.Message, "")
                 )
@@ -145,12 +144,6 @@ namespace Ranger.Services.Notifications
                 .SubscribeEvent<SubscriptionUpdated>()
                 .SubscribeCommand<SendTenantDomainUpdatedEmails>()
                 .SubscribeCommand<SendPusherOrganizationDomainUpdatedNotification>();
-        }
-
-
-        private void OnShutdown()
-        {
-            this.busSubscriber.Dispose();
         }
     }
 }
