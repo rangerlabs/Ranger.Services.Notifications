@@ -118,7 +118,7 @@ namespace Ranger.Services.Notifications
                 endpoints.MapDockerImageTagHealthCheck();
                 endpoints.MapRabbitMQHealthCheck();
             });
-            this.busSubscriber = app.UseRabbitMQ(applicationLifetime)
+            this.busSubscriber = app.UseRabbitMQ()
                 .SubscribeCommand<SendNewPrimaryOwnerEmail>((c, e) =>
                    new SendNewPrimaryOwnerEmailRejected(e.Message, "")
                 )
