@@ -25,8 +25,6 @@ namespace Ranger.Services.Notifications
     {
         private readonly IWebHostEnvironment Environment;
         private readonly IConfiguration configuration;
-        private ILoggerFactory loggerFactory;
-        private IBusSubscriber busSubscriber;
 
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
@@ -103,10 +101,8 @@ namespace Ranger.Services.Notifications
             builder.AddRabbitMq();
         }
 
-        public void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifetime)
         {
-            this.loggerFactory = loggerFactory;
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseEndpoints(endpoints =>
@@ -118,32 +114,32 @@ namespace Ranger.Services.Notifications
                 endpoints.MapDockerImageTagHealthCheck();
                 endpoints.MapRabbitMQHealthCheck();
             });
-            this.busSubscriber = app.UseRabbitMQ()
-                .SubscribeCommand<SendNewPrimaryOwnerEmail>((c, e) =>
+            app.UseRabbitMQ()
+                .SubscribeCommandWithHandler<SendNewPrimaryOwnerEmail>((c, e) =>
                    new SendNewPrimaryOwnerEmailRejected(e.Message, "")
                 )
-                .SubscribeCommand<SendNewUserEmail>((c, e) =>
+                .SubscribeCommandWithHandler<SendNewUserEmail>((c, e) =>
                     new SendNewUserEmailRejected(e.Message, "")
                 )
-                .SubscribeCommand<SendPrimaryOwnerTransferEmails>((c, e) =>
+                .SubscribeCommandWithHandler<SendPrimaryOwnerTransferEmails>((c, e) =>
                     new SendPrimaryOwnerTransferEmailsRejected(e.Message, "")
                 )
-                .SubscribeCommand<SendDomainDeletedEmail>((c, e) =>
+                .SubscribeCommandWithHandler<SendDomainDeletedEmail>((c, e) =>
                     new SendDomainDeletedEmailRejected(e.Message, ""))
-                .SubscribeCommand<SendPrimaryOwnerTransferCancelledEmails>()
-                .SubscribeCommand<SendPrimaryOwnerTransferAcceptedEmails>()
-                .SubscribeCommand<SendPrimaryOwnerTransferRefusedEmails>()
-                .SubscribeCommand<SendResetPasswordEmail>()
-                .SubscribeCommand<SendContactFormEmail>()
-                .SubscribeCommand<SendChangeEmailEmail>()
-                .SubscribeCommand<SendUserPermissionsUpdatedEmail>()
-                .SubscribeCommand<SendPusherDomainFrontendNotification>()
-                .SubscribeCommand<SendPusherDomainUserPredefinedNotification>()
-                .SubscribeCommand<SendPusherDomainUserCustomNotification>()
-                .SubscribeCommand<SendPusherDomainCustomNotification>()
+                .SubscribeCommandWithHandler<SendPrimaryOwnerTransferCancelledEmails>()
+                .SubscribeCommandWithHandler<SendPrimaryOwnerTransferAcceptedEmails>()
+                .SubscribeCommandWithHandler<SendPrimaryOwnerTransferRefusedEmails>()
+                .SubscribeCommandWithHandler<SendResetPasswordEmail>()
+                .SubscribeCommandWithHandler<SendContactFormEmail>()
+                .SubscribeCommandWithHandler<SendChangeEmailEmail>()
+                .SubscribeCommandWithHandler<SendUserPermissionsUpdatedEmail>()
+                .SubscribeCommandWithHandler<SendPusherDomainFrontendNotification>()
+                .SubscribeCommandWithHandler<SendPusherDomainUserPredefinedNotification>()
+                .SubscribeCommandWithHandler<SendPusherDomainUserCustomNotification>()
+                .SubscribeCommandWithHandler<SendPusherDomainCustomNotification>()
                 .SubscribeEvent<SubscriptionUpdated>()
-                .SubscribeCommand<SendTenantDomainUpdatedEmails>()
-                .SubscribeCommand<SendPusherOrganizationDomainUpdatedNotification>();
+                .SubscribeCommandWithHandler<SendTenantDomainUpdatedEmails>()
+                .SubscribeCommandWithHandler<SendPusherOrganizationDomainUpdatedNotification>();
         }
     }
 }
