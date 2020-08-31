@@ -75,12 +75,21 @@ namespace Ranger.Services.Notifications
 
                     options.RequireHttpsMetadata = false;
                 });
-
-            services.AddDataProtection()
-                .SetApplicationName("Notifications")
-                .ProtectKeysWithCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
-                .UnprotectKeysWithAnyCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
-                .PersistKeysToDbContext<NotificationsDbContext>();
+            // Workaround for MAC validation issues on MacOS
+            if (configuration.IsIntegrationTesting())
+            {
+                services.AddDataProtection()
+                   .SetApplicationName("Notifications")
+                   .PersistKeysToDbContext<NotificationsDbContext>();
+            }
+            else
+            {
+                services.AddDataProtection()
+                    .SetApplicationName("Notifications")
+                    .ProtectKeysWithCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
+                    .UnprotectKeysWithAnyCertificate(new X509Certificate2(configuration["DataProtectionCertPath:Path"]))
+                    .PersistKeysToDbContext<NotificationsDbContext>();
+            }
 
             services.AddTransient<IPusher>(s =>
                         {
