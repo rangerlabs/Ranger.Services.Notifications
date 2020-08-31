@@ -18,6 +18,7 @@ ARG MYGET_API_KEY
 COPY *.sln ./
 COPY ./src/Ranger.Services.Notifications/Ranger.Services.Notifications.csproj ./src/Ranger.Services.Notifications/Ranger.Services.Notifications.csproj
 COPY ./src/Ranger.Services.Notifications.Data/Ranger.Services.Notifications.Data.csproj ./src/Ranger.Services.Notifications.Data/Ranger.Services.Notifications.Data.csproj
+COPY ./test/Ranger.Services.Notifications.Tests/Ranger.Services.Notifications.Tests.csproj ./test/Ranger.Services.Notifications.Tests/Ranger.Services.Notifications.Tests.csproj
 COPY ./scripts ./scripts
 
 RUN ./scripts/create-nuget-config.sh ${MYGET_API_KEY}
