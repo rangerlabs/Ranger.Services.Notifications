@@ -19,9 +19,7 @@ namespace Ranger.Services.Notifications.Tests
         }
 
         [Fact]
-        public Task ApiGatway_Starts()
-        {
-            return Task.CompletedTask;
-        }
+        public void Notifications_Starts()
+        { }
     }
 }
