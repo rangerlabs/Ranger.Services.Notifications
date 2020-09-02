@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Ranger.Common;
 using Ranger.InternalHttpClient;
 using Ranger.RabbitMQ;
+using Ranger.RabbitMQ.BusPublisher;
 using Ranger.Services.Notifications.Data;
 using SendGrid.Helpers.Mail;
 
