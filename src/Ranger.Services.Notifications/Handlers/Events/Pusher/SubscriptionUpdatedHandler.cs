@@ -7,9 +7,9 @@ namespace Ranger.Services.Notifications
     public class SubscriptionUpdatedHandler : IEventHandler<SubscriptionUpdated>
     {
         private readonly IPusherNotifier pusherNotifier;
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
 
-        public SubscriptionUpdatedHandler(TenantsHttpClient tenantsHttpClient, IPusherNotifier pusherNotifier)
+        public SubscriptionUpdatedHandler(ITenantsHttpClient tenantsHttpClient, IPusherNotifier pusherNotifier)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.pusherNotifier = pusherNotifier;

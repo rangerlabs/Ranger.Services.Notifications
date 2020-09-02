@@ -9,9 +9,9 @@ namespace Ranger.Services.Notifications
     public class SendPusherDomainCustomNotificationHandler : ICommandHandler<SendPusherDomainCustomNotification>
     {
         private readonly IPusherNotifier pusherNotifier;
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
 
-        public SendPusherDomainCustomNotificationHandler(TenantsHttpClient tenantsHttpClient, IPusherNotifier pusherNotifier)
+        public SendPusherDomainCustomNotificationHandler(ITenantsHttpClient tenantsHttpClient, IPusherNotifier pusherNotifier)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.pusherNotifier = pusherNotifier;

@@ -15,9 +15,9 @@ namespace Ranger.Services.Notifications.Handlers.Email
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
         private readonly SendGridOptions sendGridOptions;
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
 
-        public SendPrimaryOwnerTransferAcceptedEmailsHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferAcceptedEmails> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
+        public SendPrimaryOwnerTransferAcceptedEmailsHandler(ITenantsHttpClient tenantsHttpClient, ILogger<SendPrimaryOwnerTransferAcceptedEmails> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;

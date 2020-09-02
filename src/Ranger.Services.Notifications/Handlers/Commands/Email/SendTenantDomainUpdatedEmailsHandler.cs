@@ -12,13 +12,13 @@ namespace Ranger.Services.Notifications.Handlers.Commands.Email
 {
     public class SendTenantDomainUpdatedEmailsHandler : ICommandHandler<SendTenantDomainUpdatedEmails>
     {
-        private readonly TenantsHttpClient tenantsHttpClient;
-        private readonly IdentityHttpClient identityHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
+        private readonly IIdentityHttpClient identityHttpClient;
         private readonly IEmailNotifier emailNotifier;
         private readonly SendGridOptions sendGridOptions;
         private readonly ILogger<SendTenantDomainUpdatedEmailsHandler> logger;
 
-        public SendTenantDomainUpdatedEmailsHandler(TenantsHttpClient tenantsHttpClient, IdentityHttpClient identityHttpClient, IEmailNotifier emailNotifier, SendGridOptions sendGridOptions, ILogger<SendTenantDomainUpdatedEmailsHandler> logger)
+        public SendTenantDomainUpdatedEmailsHandler(ITenantsHttpClient tenantsHttpClient, IIdentityHttpClient identityHttpClient, IEmailNotifier emailNotifier, SendGridOptions sendGridOptions, ILogger<SendTenantDomainUpdatedEmailsHandler> logger)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.identityHttpClient = identityHttpClient;

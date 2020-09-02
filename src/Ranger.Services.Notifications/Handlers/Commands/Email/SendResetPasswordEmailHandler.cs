@@ -11,13 +11,13 @@ namespace Ranger.Services.Notifications.Handlers
 {
     class SendResetPasswordEmailHandler : ICommandHandler<SendResetPasswordEmail>
     {
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
         private readonly ILogger<SendResetPasswordEmailHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
         private readonly SendGridOptions sendGridOptions;
 
-        public SendResetPasswordEmailHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendResetPasswordEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
+        public SendResetPasswordEmailHandler(ITenantsHttpClient tenantsHttpClient, ILogger<SendResetPasswordEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;

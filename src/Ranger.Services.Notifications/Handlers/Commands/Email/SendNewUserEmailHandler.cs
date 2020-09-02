@@ -11,13 +11,13 @@ namespace Ranger.Services.Notifications
 {
     class SendNewUserEmailHandler : ICommandHandler<SendNewUserEmail>
     {
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
         private readonly ILogger<SendNewUserEmailHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
         private readonly SendGridOptions sendGridOptions;
 
-        public SendNewUserEmailHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendNewUserEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
+        public SendNewUserEmailHandler(ITenantsHttpClient tenantsHttpClient, ILogger<SendNewUserEmailHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;

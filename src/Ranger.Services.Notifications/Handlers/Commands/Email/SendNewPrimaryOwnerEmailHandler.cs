@@ -12,12 +12,12 @@ namespace Ranger.Services.Notifications.Handlers
     class SendNewPrimaryOwnerEmailHandler : ICommandHandler<SendNewPrimaryOwnerEmail>
     {
         private readonly ILogger<SendNewPrimaryOwnerEmailHandler> logger;
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
         private readonly SendGridOptions sendGridOptions;
 
-        public SendNewPrimaryOwnerEmailHandler(ILogger<SendNewPrimaryOwnerEmailHandler> logger, TenantsHttpClient tenantsHttpClient, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
+        public SendNewPrimaryOwnerEmailHandler(ILogger<SendNewPrimaryOwnerEmailHandler> logger, ITenantsHttpClient tenantsHttpClient, IEmailNotifier emailNotifier, IBusPublisher busPublisher, SendGridOptions sendGridOptions)
         {
             this.logger = logger;
             this.tenantsHttpClient = tenantsHttpClient;

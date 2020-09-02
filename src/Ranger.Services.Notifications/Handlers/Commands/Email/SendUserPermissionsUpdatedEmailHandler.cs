@@ -11,12 +11,12 @@ namespace Ranger.Services.Notifications
 {
     class SendUserPermissionsUpdatedHandler : ICommandHandler<SendUserPermissionsUpdatedEmail>
     {
-        private readonly TenantsHttpClient tenantsHttpClient;
+        private readonly ITenantsHttpClient tenantsHttpClient;
         private readonly ILogger<SendUserPermissionsUpdatedHandler> logger;
         private readonly IEmailNotifier emailNotifier;
         private readonly IBusPublisher busPublisher;
 
-        public SendUserPermissionsUpdatedHandler(TenantsHttpClient tenantsHttpClient, ILogger<SendUserPermissionsUpdatedHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
+        public SendUserPermissionsUpdatedHandler(ITenantsHttpClient tenantsHttpClient, ILogger<SendUserPermissionsUpdatedHandler> logger, IEmailNotifier emailNotifier, IBusPublisher busPublisher)
         {
             this.tenantsHttpClient = tenantsHttpClient;
             this.logger = logger;
