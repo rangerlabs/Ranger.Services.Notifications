@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Ranger.Common;
+using Ranger.RabbitMQ;
 
 namespace Ranger.Services.Notifications.Data
 {
-    public class NotificationsDbContext : DbContext, IDataProtectionKeyContext
+    public class NotificationsDbContext : DbContext, IDataProtectionKeyContext, IOutboxStore
     {
 
         private readonly IDataProtectionProvider dataProtectionProvider;
@@ -18,6 +19,7 @@ namespace Ranger.Services.Notifications.Data
 
         public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
         public DbSet<FrontendNotification> FrontendNotifications { get; set; }
+        public DbSet<OutboxMessage> Outbox { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
