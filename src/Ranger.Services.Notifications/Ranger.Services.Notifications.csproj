@@ -26,7 +26,7 @@
     <PackageReference Include="Ranger.Monitoring" version="3.2.4" />
     <PackageReference Include="SendGrid" Version="9.21.0" />
     <PackageReference Include="PusherServer" Version="4.2.0" />
-    <PackageReference Include="Ranger.InternalHttpClient" Version="5.1.7" />
+    <PackageReference Include="Ranger.InternalHttpClient" Version="5.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ranger.Services.Notifications.Data\Ranger.Services.Notifications.Data.csproj" />
